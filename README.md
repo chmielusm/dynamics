@@ -1,1 +1,1 @@
-# This repository is mainly for source code of tools/plugins or anything helpful and Dynamics 365 CE related
+# This repository is mainly for source code of tools/plugins or so related to Dynamics 365 CE
