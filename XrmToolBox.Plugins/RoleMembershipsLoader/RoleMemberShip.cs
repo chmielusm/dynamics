@@ -1,23 +1,23 @@
 ﻿using Microsoft.VisualStudio.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace RoleMembershipsLoader.Models
-{
+{    
     public class SpreadSheetRangeDefinition
     {
         public string WorksheetName { get; set; }
-        public Tuple<int, int, int> UserName { get; set; }
-        public Tuple<int, int, int> Manager { get; set; }
-        public Tuple<int, int, int> Position { get; set; }
-        public Tuple<int, int, int> Site { get; set; }
-        public Tuple<int, int, int> Territory { get; set; }
-        public Tuple<int, int, int> LegalEntity { get; set; }
-        public Tuple<int, int, int> BusinessUnit { get; set; }
-        public Tuple<int, int, int> SecurityRoles { get; set; }
-        public Tuple<int, int, int> FieldSecurityProfile { get; set; }
+        public string UserName { get; set; }
+        public string Manager { get; set; }
+        public string Position { get; set; }
+        public string Site { get; set; }
+        public string Territory { get; set; }
+        public string BusinessUnit { get; set; }
+        public string SecurityRoles { get; set; }
+        public string FieldSecurityProfile { get; set; }
         public bool AllRows { get; set; }
-        public Tuple<int, int, int> RowsToLoad { get; set; }
+        public string RowsToLoad { get; set; }
     }
     public class ImportContent
     {

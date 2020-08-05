@@ -1,4 +1,6 @@
-﻿namespace RoleMembershipsLoader
+﻿using RoleMembershipsLoader.Models;
+
+namespace RoleMembershipsLoader
 {
     /// <summary>
     /// This class can help you to store settings for your plugin
@@ -9,5 +11,6 @@
     public class Settings
     {
         public string LastUsedOrganizationWebappUrl { get; set; }
+        public SpreadSheetRangeDefinition SpreadSheetRangeDefinition { get; set; }
     }
 }

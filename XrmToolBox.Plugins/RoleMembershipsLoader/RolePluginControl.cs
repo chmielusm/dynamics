@@ -11,6 +11,9 @@ using XrmToolBox.Extensibility;
 
 namespace RoleMembershipsLoader
 {
+    /// <summary>
+    /// Plugin Control
+    /// </summary>
     public partial class RolePluginControl : PluginControlBase
     {
         private Settings mySettings;
@@ -36,7 +39,19 @@ namespace RoleMembershipsLoader
             }
             else
             {
-                LogInfo("Settings found and loaded");
+                if (mySettings.SpreadSheetRangeDefinition != null)
+                {
+                    // Loads existing definition
+                    this.txtBu.Text = mySettings.SpreadSheetRangeDefinition.BusinessUnit;
+                    this.txtManager.Text = mySettings.SpreadSheetRangeDefinition.Manager;
+                    this.txtOccupancy.Text = mySettings.SpreadSheetRangeDefinition.Manager;
+                    this.txtProfile.Text = mySettings.SpreadSheetRangeDefinition.FieldSecurityProfile;
+                    this.txtRowsToImport.Text = mySettings.SpreadSheetRangeDefinition.RowsToLoad;
+                    this.txtSecurityRole.Text = mySettings.SpreadSheetRangeDefinition.SecurityRoles;
+                    this.txtSite.Text = mySettings.SpreadSheetRangeDefinition.Site;
+                    this.txtTerritory.Text = mySettings.SpreadSheetRangeDefinition.Territory;
+                    this.txtUserName.Text = mySettings.SpreadSheetRangeDefinition.UserName;
+                }
             }
         }
 
@@ -63,6 +78,11 @@ namespace RoleMembershipsLoader
             ExecuteMethod(ImportData);
         }
 
+        /// <summary>
+        /// Browses for file to load
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnRolesBrowse_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
@@ -103,18 +123,25 @@ namespace RoleMembershipsLoader
             EnableLoadButton();
         }
 
-
+        /// <summary>
+        /// Enable/disable load button
+        /// </summary>
         private void EnableLoadButton()
         {
             this.btnLoad.Enabled = this.lstWorksheetName.Items.Count > 0 && this.lstWorksheetName.SelectedItem != null;
         }
 
+        /// <summary>
+        /// Import all rows or select
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void chkAllRows_CheckedChanged(object sender, EventArgs e)
         {
             this.txtRowsToImport.Visible = !chkAllRows.Checked;
             if (!this.txtRowsToImport.Visible)
             {
-                var userName = MainLoader.FindCell(this.txtUserName.Text);
+                var userName = Helper.FindCell(this.txtUserName.Text);
 
                 this.chkAllRows.Text = $"Rows range to load: {userName.Item2}";
                 this.txtRowsToImport.Text = $"{userName.Item1 + 1}";
@@ -160,24 +187,34 @@ namespace RoleMembershipsLoader
             ValidateNoCellsRange((TextBox)sender);
         }
 
+        /// <summary>
+        /// Cells range is mandatory
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txtSecurityRole_TextChanged(object sender, EventArgs e)
         {
             string text = ((TextBox)sender).Text;
             if (string.IsNullOrWhiteSpace(text)) return;
 
-            var field = MainLoader.FindCell(text);
+            var field = Helper.FindCell(text);
             if (field.Item1 <= 0 || field.Item2 <= 0)
             {
                 MessageBox.Show($"Invalid cell range: {text}", "Invalid range", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
+        /// <summary>
+        /// Cells range is mandatory
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void txtProfile_TextChanged(object sender, EventArgs e)
         {
             string text = ((TextBox)sender).Text;
             if (string.IsNullOrWhiteSpace(text)) return;
 
-            var field = MainLoader.FindCell(text);
+            var field = Helper.FindCell(text);
             if (field.Item1 <= 0 || field.Item2 <= 0)
             {
                 MessageBox.Show($"Invalid cell range: {text}", "Invalid range", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -193,6 +230,9 @@ namespace RoleMembershipsLoader
 
         #region Private
 
+        /// <summary>
+        /// Performs import
+        /// </summary>
         private void ImportData()
         {
             btnLoad.Enabled = false;
@@ -201,25 +241,26 @@ namespace RoleMembershipsLoader
 
             WorkAsync(new WorkAsyncInfo
             {
-                Message = $"Parsing worksheet {this.lstWorksheetName.SelectedItem.ToString()}...",
+                Message = $"Parsing worksheet {this.lstWorksheetName.SelectedItem}...",
                 Work = (mainWorker, mainArgs) =>
                 {
                     SpreadSheetRangeDefinition definition = new SpreadSheetRangeDefinition
                     {
                         WorksheetName = this.lstWorksheetName.SelectedItem.ToString(),
-                        UserName = MainLoader.FindCell(this.txtUserName.Text),
-                        Manager = MainLoader.FindCell(this.txtManager.Text),
-                        Position = MainLoader.FindCell(this.txtOccupancy.Text),
-                        Site = MainLoader.FindCell(this.txtSite.Text),
-                        Territory = MainLoader.FindCell(this.txtTerritory.Text),
-                        LegalEntity = MainLoader.FindCell(this.txtLe.Text),
-                        BusinessUnit = MainLoader.FindCell(this.txtBu.Text),
-                        SecurityRoles = MainLoader.FindCell(this.txtSecurityRole.Text),
-                        FieldSecurityProfile = MainLoader.FindCell(this.txtProfile.Text),
+                        UserName = this.txtUserName.Text,
+                        Manager = this.txtManager.Text,
+                        Position = this.txtOccupancy.Text,
+                        Site = this.txtSite.Text,
+                        Territory = this.txtTerritory.Text,
+                        BusinessUnit = this.txtBu.Text,
+                        SecurityRoles = this.txtSecurityRole.Text,
+                        FieldSecurityProfile = this.txtProfile.Text,
                         AllRows = this.chkAllRows.Checked,
-                        RowsToLoad = MainLoader.FindCell(this.txtRowsToImport.Text)
+                        RowsToLoad = this.txtRowsToImport.Text
                     };
-                    
+
+                    mySettings.SpreadSheetRangeDefinition = definition;
+
                     mainArgs.Result = manager.ParseFile(definition);
                 },
                 PostWorkCallBack = (mainArgs) =>
@@ -241,7 +282,7 @@ namespace RoleMembershipsLoader
                             Message = "Fetching system users, security roles and field security profiles from your Organization...",
                             Work = (worker, args) =>
                             {                                
-                                args.Result = manager.BuildImportContent(result);
+                                args.Result = manager.FetchData(result);
                                 var content = args.Result as ImportContent;
                                 if (content != null)
                                 {
@@ -344,6 +385,11 @@ namespace RoleMembershipsLoader
             });
         }
 
+        /// <summary>
+        /// Event handler for warnings
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Manager_OnWarning(object sender, EventArgs e)
         {
             NotificationMessage msg = e as NotificationMessage;
@@ -352,6 +398,10 @@ namespace RoleMembershipsLoader
             LogWarning(msg.Message);
         }
 
+        /// <summary>
+        /// Cells range is not support for such as definition
+        /// </summary>
+        /// <param name="textBox"></param>
         private void ValidateNoCellsRange(TextBox textBox)
         {
             if (string.IsNullOrWhiteSpace(textBox.Text)) return;

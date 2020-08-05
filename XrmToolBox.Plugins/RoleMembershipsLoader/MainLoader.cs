@@ -5,24 +5,42 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace RoleMembershipsLoader
 {
+    /// <summary>
+    /// Loader
+    /// </summary>
     public class MainLoader
     {
         private readonly IOrganizationService _organizationService;
         private readonly DataSet _fileContent;
 
+        /// <summary>
+        /// Signals warning
+        /// </summary>
         public event EventHandler OnWarning;
+        /// <summary>
+        /// Signals progress
+        /// </summary>
         public event EventHandler OnProgress;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="organizationService"></param>
+        /// <param name="fileContent"></param>
         public MainLoader(IOrganizationService organizationService, DataSet fileContent)
         {
             _organizationService = organizationService;
             _fileContent = fileContent;
         }
 
+        /// <summary>
+        /// Parses Excel file resulted with input for processing
+        /// </summary>
+        /// <param name="definition"></param>
+        /// <returns></returns>
         public ImportContent ParseFile(SpreadSheetRangeDefinition definition)
         {
             ImportContent content = new ImportContent()
@@ -36,25 +54,25 @@ namespace RoleMembershipsLoader
             var worksheet = _fileContent.Tables[definition.WorksheetName];     
 
             // read roles
-            for (int i = definition.SecurityRoles.Item2; i <= definition.SecurityRoles.Item3; i++)
+            for (int i = definition.SecurityRoles.ToTuple().Item2; i <= definition.SecurityRoles.ToTuple().Item3; i++)
             {
-                roleList.Add(new Role() { Name = worksheet.Rows[definition.SecurityRoles.Item1][i].ToString() });
+                roleList.Add(new Role() { Name = worksheet.Rows[definition.SecurityRoles.ToTuple().Item1][i].ToString() });
             }
 
             // read security profiles
-            for (int i = definition.FieldSecurityProfile.Item2; i <= definition.FieldSecurityProfile.Item3; i++)
+            for (int i = definition.FieldSecurityProfile.ToTuple().Item2; i <= definition.FieldSecurityProfile.ToTuple().Item3; i++)
             {
-                profiles.Add(new FieldSecurityProfile() { Name = worksheet.Rows[definition.FieldSecurityProfile.Item1][i].ToString() });
+                profiles.Add(new FieldSecurityProfile() { Name = worksheet.Rows[definition.FieldSecurityProfile.ToTuple().Item1][i].ToString() });
             }
 
             //parse user rows
-            var startRow = definition.UserName.Item1 + 1;
+            var startRow = definition.UserName.ToTuple().Item1 + 1;
             var endRow = worksheet.Rows.Count;
 
             if (!definition.AllRows)
             {
-                startRow = definition.RowsToLoad.Item1;
-                endRow = definition.RowsToLoad.Item2;
+                startRow = definition.RowsToLoad.ToTuple().Item1;
+                endRow = definition.RowsToLoad.ToTuple().Item2;
                 if (endRow == 0) endRow = startRow + 1;
             }
 
@@ -67,17 +85,17 @@ namespace RoleMembershipsLoader
             {                
                 User user = new User();
 
-                for (int colCounter = definition.UserName.Item2; colCounter < worksheet.Columns.Count; colCounter++)
+                for (int colCounter = definition.UserName.ToTuple().Item2; colCounter < worksheet.Columns.Count; colCounter++)
                 {
                     // user name
-                    if (colCounter == definition.UserName.Item2)
+                    if (colCounter == definition.UserName.ToTuple().Item2)
                     {
                         user.Name = worksheet.Rows[i][colCounter].ToString();
 
                         LogProgress($"Parsing user {user.Name}", i);
                     }
                     // manager
-                    if (colCounter == definition.Manager.Item2)
+                    if (colCounter == definition.Manager.ToTuple().Item2)
                     {
                         user.Manager = new User
                         {
@@ -86,7 +104,7 @@ namespace RoleMembershipsLoader
                         user.IsManagerIncluded = true;
                     }
                     // position
-                    if (colCounter == definition.Position.Item2)
+                    if (colCounter == definition.Position.ToTuple().Item2)
                     {
                         user.Position = new Position
                         {
@@ -95,7 +113,7 @@ namespace RoleMembershipsLoader
                         user.IsPositionIncluded = true;
                     }
                     // site
-                    if (colCounter == definition.Site.Item2)
+                    if (colCounter == definition.Site.ToTuple().Item2)
                     {
                         user.Site = new Site
                         {
@@ -104,7 +122,7 @@ namespace RoleMembershipsLoader
                         user.IsSiteIncluded = true;
                     }
                     // territory
-                    if (colCounter == definition.Territory.Item2)
+                    if (colCounter == definition.Territory.ToTuple().Item2)
                     {
                         user.Territory = new Territory
                         {
@@ -112,17 +130,8 @@ namespace RoleMembershipsLoader
                         };
                         user.IsTerritoryIncluded = true;
                     }
-                    // le
-                    if (colCounter == definition.LegalEntity.Item2)
-                    {
-                        user.LegalEntity = new LegalEntity
-                        {
-                            Name = worksheet.Rows[i][colCounter].ToString()
-                        };
-                        user.IsLegalEntityIncluded = true;
-                    }
                     // bu
-                    if (colCounter == definition.BusinessUnit.Item2)
+                    if (colCounter == definition.BusinessUnit.ToTuple().Item2)
                     {
                         user.BusinessUnit = new BusinessUnit
                         {
@@ -130,22 +139,22 @@ namespace RoleMembershipsLoader
                         };
                     }
                     // security roles
-                    if (colCounter >= definition.SecurityRoles.Item2 && colCounter <= definition.SecurityRoles.Item3)
+                    if (colCounter >= definition.SecurityRoles.ToTuple().Item2 && colCounter <= definition.SecurityRoles.ToTuple().Item3)
                     {
                         content.RoleMemberships.Add(new RoleMembership()
                         {
                             User = user,
-                            Role = GetRole(roleList[colCounter - definition.SecurityRoles.Item2], user.BusinessUnit),
+                            Role = GetRole(roleList[colCounter - definition.SecurityRoles.ToTuple().Item2], user.BusinessUnit),
                             Assign = Helper.ParseBoolean(worksheet.Rows[i][colCounter].ToString())
                         });
                     }
                     // field security profiles
-                    if (colCounter >= definition.FieldSecurityProfile.Item2 && colCounter <= definition.FieldSecurityProfile.Item3)
+                    if (colCounter >= definition.FieldSecurityProfile.ToTuple().Item2 && colCounter <= definition.FieldSecurityProfile.ToTuple().Item3)
                     {
                         content.ProfileMemberships.Add(new ProfileMembership()
                         {
                             User = user,
-                            FieldSecurityProfile = profiles[colCounter - definition.FieldSecurityProfile.Item2],
+                            FieldSecurityProfile = profiles[colCounter - definition.FieldSecurityProfile.ToTuple().Item2],
                             Assign = Helper.ParseBoolean(worksheet.Rows[i][colCounter].ToString())
                         });
                     }
@@ -157,7 +166,12 @@ namespace RoleMembershipsLoader
             return content;
         }
 
-        public ImportContent BuildImportContent(ImportContent content)
+        /// <summary>
+        /// Fetches data from CE instance
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public ImportContent FetchData(ImportContent content)
         {
             if (content.Users.Count == 0) return null;
 
@@ -167,7 +181,6 @@ namespace RoleMembershipsLoader
             var positionsFromCrm = FetchPositions(content.Users.Where(x => x.Position != null).Select(x => x.Position).Distinct());
             var sitesFromCrm = FetchSites(content.Users.Where(x => x.Site != null).Select(x => x.Site).Distinct());
             var territoriesFromCrm = FetchTerritories(content.Users.Where(x => x.Territory != null).Select(x => x.Territory).Distinct());
-            var legalEntitiesFromCrm = FetchLegalEntities(content.Users.Where(x => x.LegalEntity != null).Select(x => x.LegalEntity).Distinct());
             var buFromCrm = FetchBusinessUnits(content.Users.Where(x => x.BusinessUnit != null).Select(x => x.BusinessUnit).Distinct());
             var usersFromCrm = FetchSystemUsers(content.RoleMemberships.Select(x => x.User).Distinct());
             var rolesFromCrm = FetchRoles(content.RoleMemberships.Select(x => x.Role).Distinct());
@@ -240,19 +253,6 @@ namespace RoleMembershipsLoader
                             user.Territory = temp;
                         }
                     }
-                    if (user.LegalEntity != null)
-                    {
-                        var temp = legalEntitiesFromCrm.FirstOrDefault(x => x.Name == user.LegalEntity.Name);
-                        if (temp == null)
-                        {
-                            user.IsLegalEntityIncluded = false;
-                            LogWarning("Legal Entity {0} is not found in Organization", user.LegalEntity.Name);
-                        }
-                        else
-                        {
-                            user.LegalEntity = temp;
-                        }
-                    }
                     if (user.BusinessUnit != null)
                     {
                         var temp = buFromCrm.FirstOrDefault(x => x.Name == user.BusinessUnit.Name);
@@ -317,24 +317,12 @@ namespace RoleMembershipsLoader
                 ProfileMemberships = profileMemberships,
                 RoleMemberships = roleMemberships
             };
-        }
+        }        
 
-        private void LogWarning(string message, params object[] args)
-        {
-            if (OnWarning != null)
-            {
-                OnWarning.Invoke(this, new NotificationMessage(string.Format(message, args)));
-            }
-        }
-
-        private void LogProgress(string message, int percent)
-        {
-            if (OnProgress != null)
-            {
-                OnProgress.Invoke(this, new NotificationMessage(message, percent));
-            }
-        }
-
+        /// <summary>
+        /// Updates systemuser record
+        /// </summary>
+        /// <param name="user"></param>
         public void UpdateUser(User user)
         {
             Entity userToUpdate = new Entity("systemuser", user.Id);
@@ -416,6 +404,10 @@ namespace RoleMembershipsLoader
             _organizationService.Update(userToUpdate);
         }
 
+        /// <summary>
+        /// Assigns/unassigns security role memebership
+        /// </summary>
+        /// <param name="memberShip"></param>
         public void EnsureSystemUserRoleMembership(RoleMembership memberShip)
         {
             string query = $@"<fetch>
@@ -450,7 +442,10 @@ namespace RoleMembershipsLoader
                 }
             }
         }
-
+        /// <summary>
+        /// Assigns/unassigns field security profile memebership
+        /// </summary>
+        /// <param name="memberShip"></param>
         public void EnsureSystemUserProfileMembership(ProfileMembership memberShip)
         {
             string query = $@"<fetch>
@@ -484,39 +479,22 @@ namespace RoleMembershipsLoader
                                     new EntityReferenceCollection() { new EntityReference("fieldsecurityprofile", memberShip.FieldSecurityProfile.Id) });
                 }
             }
+        }        
+
+        private void LogWarning(string message, params object[] args)
+        {
+            if (OnWarning != null)
+            {
+                OnWarning.Invoke(this, new NotificationMessage(string.Format(message, args)));
+            }
         }
 
-        public static Tuple<int, int, int> FindCell(string cellStr)
+        private void LogProgress(string message, int percent)
         {
-            if (string.IsNullOrWhiteSpace(cellStr)) return new Tuple<int, int, int>(0, 0, 0);
-
-            var parts = cellStr.Split(':');
-            int counter = 0;
-            int retValCol = 0;
-            int retValRow = 0;
-            int retValColEnd = 0;
-
-            while (counter < parts.Length)
+            if (OnProgress != null)
             {
-                var match = Regex.Match(parts[counter], @"(?<col>[A-Z]+)(?<row>\d+)");
-                var colStr = match.Groups["col"].ToString();
-                var col = Convert.ToInt32(colStr.Select((t, i) => (colStr[i] - 64) * Math.Pow(26, colStr.Length - i - 1)).Sum());
-                var row = int.Parse(match.Groups["row"].ToString());
-
-                if (counter == 0)
-                {
-                    retValCol = col;
-                    retValRow = row;
-                }
-                else
-                {
-                    retValColEnd = col;
-                }
-
-                counter++;
+                OnProgress.Invoke(this, new NotificationMessage(message, percent));
             }
-
-            return new Tuple<int, int, int>(retValRow - 1, retValCol - 1, retValColEnd - 1);
         }
 
         private List<User> FetchSystemUsers(IEnumerable<User> userList)
@@ -626,34 +604,6 @@ namespace RoleMembershipsLoader
                 {
                     Id = record.GetAttributeValue<Guid>("territoryid"),
                     Name = record.GetAttributeValue<string>("name")
-                });
-            }
-            return retVal;
-        }
-
-        private List<LegalEntity> FetchLegalEntities(IEnumerable<LegalEntity> legalEntities)
-        {
-            List<LegalEntity> retVal = new List<LegalEntity>();
-            string query = $@"<fetch>
-                                  <entity name='rs_legal_entity' >
-                                    <attribute name='rs_legal_entityid' />
-                                    <attribute name='rs_name' />
-                                    <filter>
-                                      <condition attribute='rs_name' operator='in' >
-                                        { string.Join(" ", legalEntities.Select(x => $"<VALUE>{ x.Name }</VALUE>")) }
-                                      </condition>
-                                    </filter>
-                                  </entity>
-                                </fetch>";
-
-            var result = _organizationService.RetrieveMultiple(new FetchExpression(query));
-            if (result == null || result.Entities.Count == 0) return retVal;
-            foreach (var record in result.Entities)
-            {
-                retVal.Add(new LegalEntity()
-                {
-                    Id = record.GetAttributeValue<Guid>("rs_legal_entityid"),
-                    Name = record.GetAttributeValue<string>("rs_name")
                 });
             }
             return retVal;

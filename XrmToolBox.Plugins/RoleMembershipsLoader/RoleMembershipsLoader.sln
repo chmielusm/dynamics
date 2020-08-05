@@ -22,12 +22,4 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1F25E733-8186-4EFB-93E7-E57D07F79897}
 	EndGlobalSection
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 2
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://ragnsells.visualstudio.com/
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = RoleMembershipsLoader.csproj
-		SccLocalPath1 = .
-	EndGlobalSection
 EndGlobal
