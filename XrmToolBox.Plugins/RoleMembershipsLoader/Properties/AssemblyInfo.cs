@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RoleMemberships")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Role and Security Profile Memberships Loader")]
+[assembly: AssemblyDescription("Assign/revoke role and security profile memberships along with user properties update")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("RoleMemberships")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyProduct("RoleMemberships Loader")]
+[assembly: AssemblyCopyright("Copyright © by Michal Chmielus 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

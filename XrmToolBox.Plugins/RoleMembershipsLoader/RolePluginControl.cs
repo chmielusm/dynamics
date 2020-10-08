@@ -30,8 +30,6 @@ namespace RoleMembershipsLoader
 
         private void RolePluginControl_Load(object sender, EventArgs e)
         {
-            ShowInfoNotification("Imports System Users and their Security Role and Field Security Profile memberships. Select Excel file, define header range cells and import.", new Uri("https://github.com/MscrmTools/XrmToolBox"), 32);
-
             // Loads or creates the settings for the plugin
             if (!SettingsManager.Instance.TryLoad(GetType(), out mySettings))
             {
@@ -226,6 +224,14 @@ namespace RoleMembershipsLoader
             CloseTool();
         }
 
+        private void btnAbout_Click(object sender, EventArgs e)
+        {
+            using (About frm = new About())
+            {
+                frm.ShowDialog();
+            }
+        }
+
         #endregion RolePluginControl
 
         #region Private
@@ -319,7 +325,7 @@ namespace RoleMembershipsLoader
                                                 catch (Exception e)
                                                 {
                                                     LogError(e.Message);
-                                                    ShowErrorNotification(e.Message, null);
+                                                    //ShowErrorNotification(e.Message, null);
                                                 }
                                                 finally
                                                 {
@@ -337,7 +343,7 @@ namespace RoleMembershipsLoader
                                                 catch (Exception e)
                                                 {
                                                     LogError(e.Message);
-                                                    ShowErrorNotification(e.Message, null);
+                                                    //ShowErrorNotification(e.Message, null);
                                                 }
                                                 finally
                                                 {
@@ -354,7 +360,7 @@ namespace RoleMembershipsLoader
                                                 catch (Exception e)
                                                 {
                                                     LogError(e.Message);
-                                                    ShowErrorNotification(e.Message, null);
+                                                    //ShowErrorNotification(e.Message, null);
                                                 }
                                                 finally
                                                 {
@@ -430,6 +436,6 @@ namespace RoleMembershipsLoader
             }
         }
 
-        #endregion PluginControlBase
+        #endregion PluginControlBase                
     }
 }

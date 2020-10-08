@@ -1,0 +1,6 @@
+C:\Users\micha\Documents\GitHub\dynamics\XrmToolBox.Plugins\RoleMembershipsLoader\obj\Release\RoleMembershipsLoader.csprojAssemblyReference.cache
+C:\Users\micha\Documents\GitHub\dynamics\XrmToolBox.Plugins\RoleMembershipsLoader\obj\Release\RoleMembershipsLoader.RolePluginControl.resources
+C:\Users\micha\Documents\GitHub\dynamics\XrmToolBox.Plugins\RoleMembershipsLoader\obj\Release\RoleMembershipsLoader.csproj.GenerateResource.cache
+C:\Users\micha\Documents\GitHub\dynamics\XrmToolBox.Plugins\RoleMembershipsLoader\obj\Release\RoleMembershipsLoader.csproj.CoreCompileInputs.cache
+C:\Users\micha\Documents\GitHub\dynamics\XrmToolBox.Plugins\RoleMembershipsLoader\obj\Release\RoleMembershipsLoader.dll
+C:\Users\micha\Documents\GitHub\dynamics\XrmToolBox.Plugins\RoleMembershipsLoader\obj\Release\RoleMembershipsLoader.pdb

@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RolePluginControl));
             this.toolStripMenu = new System.Windows.Forms.ToolStrip();
-            this.tssSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnLoad = new System.Windows.Forms.Button();
             this.lblSourceFile = new System.Windows.Forms.Label();
             this.btnRolesBrowse = new System.Windows.Forms.Button();
@@ -55,7 +55,8 @@
             this.txtManager = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtRowsToImport = new System.Windows.Forms.TextBox();
-            this.btnClose = new System.Windows.Forms.Button();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.btnAbout = new System.Windows.Forms.ToolStripLabel();
             this.toolStripMenu.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -64,24 +65,20 @@
             // 
             this.toolStripMenu.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.toolStripMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tssSeparator1});
+            this.toolStripButton1,
+            this.btnAbout});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
-            this.toolStripMenu.Size = new System.Drawing.Size(559, 25);
+            this.toolStripMenu.Size = new System.Drawing.Size(565, 31);
             this.toolStripMenu.TabIndex = 4;
             this.toolStripMenu.Text = "toolStrip1";
-            // 
-            // tssSeparator1
-            // 
-            this.tssSeparator1.Name = "tssSeparator1";
-            this.tssSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // btnLoad
             // 
             this.btnLoad.Location = new System.Drawing.Point(29, 375);
-            this.btnLoad.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnLoad.Margin = new System.Windows.Forms.Padding(2);
             this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(349, 24);
+            this.btnLoad.Size = new System.Drawing.Size(503, 24);
             this.btnLoad.TabIndex = 7;
             this.btnLoad.Text = "Load";
             this.btnLoad.UseVisualStyleBackColor = true;
@@ -100,9 +97,9 @@
             // btnRolesBrowse
             // 
             this.btnRolesBrowse.Location = new System.Drawing.Point(491, 51);
-            this.btnRolesBrowse.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnRolesBrowse.Margin = new System.Windows.Forms.Padding(2);
             this.btnRolesBrowse.Name = "btnRolesBrowse";
-            this.btnRolesBrowse.Size = new System.Drawing.Size(41, 21);
+            this.btnRolesBrowse.Size = new System.Drawing.Size(41, 20);
             this.btnRolesBrowse.TabIndex = 13;
             this.btnRolesBrowse.Text = "...";
             this.btnRolesBrowse.UseVisualStyleBackColor = true;
@@ -111,7 +108,7 @@
             // txtFileName
             // 
             this.txtFileName.Location = new System.Drawing.Point(29, 51);
-            this.txtFileName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtFileName.Margin = new System.Windows.Forms.Padding(2);
             this.txtFileName.Name = "txtFileName";
             this.txtFileName.Size = new System.Drawing.Size(461, 20);
             this.txtFileName.TabIndex = 0;
@@ -120,7 +117,7 @@
             // 
             this.lstWorksheetName.FormattingEnabled = true;
             this.lstWorksheetName.Location = new System.Drawing.Point(29, 95);
-            this.lstWorksheetName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.lstWorksheetName.Margin = new System.Windows.Forms.Padding(2);
             this.lstWorksheetName.Name = "lstWorksheetName";
             this.lstWorksheetName.Size = new System.Drawing.Size(461, 21);
             this.lstWorksheetName.TabIndex = 1;
@@ -149,7 +146,7 @@
             // txtUserName
             // 
             this.txtUserName.Location = new System.Drawing.Point(8, 39);
-            this.txtUserName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtUserName.Margin = new System.Windows.Forms.Padding(2);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(85, 20);
             this.txtUserName.TabIndex = 2;
@@ -159,7 +156,7 @@
             // txtSecurityRole
             // 
             this.txtSecurityRole.Location = new System.Drawing.Point(385, 85);
-            this.txtSecurityRole.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtSecurityRole.Margin = new System.Windows.Forms.Padding(2);
             this.txtSecurityRole.Name = "txtSecurityRole";
             this.txtSecurityRole.Size = new System.Drawing.Size(85, 20);
             this.txtSecurityRole.TabIndex = 9;
@@ -179,7 +176,7 @@
             // txtProfile
             // 
             this.txtProfile.Location = new System.Drawing.Point(385, 128);
-            this.txtProfile.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtProfile.Margin = new System.Windows.Forms.Padding(2);
             this.txtProfile.Name = "txtProfile";
             this.txtProfile.Size = new System.Drawing.Size(85, 20);
             this.txtProfile.TabIndex = 10;
@@ -202,7 +199,7 @@
             this.chkAllRows.Checked = true;
             this.chkAllRows.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkAllRows.Location = new System.Drawing.Point(29, 307);
-            this.chkAllRows.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chkAllRows.Margin = new System.Windows.Forms.Padding(2);
             this.chkAllRows.Name = "chkAllRows";
             this.chkAllRows.Size = new System.Drawing.Size(99, 17);
             this.chkAllRows.TabIndex = 11;
@@ -213,7 +210,7 @@
             // txtBu
             // 
             this.txtBu.Location = new System.Drawing.Point(385, 39);
-            this.txtBu.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBu.Margin = new System.Windows.Forms.Padding(2);
             this.txtBu.Name = "txtBu";
             this.txtBu.Size = new System.Drawing.Size(85, 20);
             this.txtBu.TabIndex = 8;
@@ -249,9 +246,9 @@
             this.groupBox1.Controls.Add(this.txtProfile);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Location = new System.Drawing.Point(29, 127);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(503, 158);
             this.groupBox1.TabIndex = 33;
             this.groupBox1.TabStop = false;
@@ -260,7 +257,7 @@
             // txtTerritory
             // 
             this.txtTerritory.Location = new System.Drawing.Point(205, 85);
-            this.txtTerritory.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTerritory.Margin = new System.Windows.Forms.Padding(2);
             this.txtTerritory.Name = "txtTerritory";
             this.txtTerritory.Size = new System.Drawing.Size(85, 20);
             this.txtTerritory.TabIndex = 6;
@@ -280,7 +277,7 @@
             // txtSite
             // 
             this.txtSite.Location = new System.Drawing.Point(205, 39);
-            this.txtSite.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtSite.Margin = new System.Windows.Forms.Padding(2);
             this.txtSite.Name = "txtSite";
             this.txtSite.Size = new System.Drawing.Size(85, 20);
             this.txtSite.TabIndex = 5;
@@ -300,7 +297,7 @@
             // txtOccupancy
             // 
             this.txtOccupancy.Location = new System.Drawing.Point(8, 128);
-            this.txtOccupancy.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtOccupancy.Margin = new System.Windows.Forms.Padding(2);
             this.txtOccupancy.Name = "txtOccupancy";
             this.txtOccupancy.Size = new System.Drawing.Size(85, 20);
             this.txtOccupancy.TabIndex = 4;
@@ -320,7 +317,7 @@
             // txtManager
             // 
             this.txtManager.Location = new System.Drawing.Point(8, 85);
-            this.txtManager.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtManager.Margin = new System.Windows.Forms.Padding(2);
             this.txtManager.Name = "txtManager";
             this.txtManager.Size = new System.Drawing.Size(85, 20);
             this.txtManager.TabIndex = 3;
@@ -340,28 +337,37 @@
             // txtRowsToImport
             // 
             this.txtRowsToImport.Location = new System.Drawing.Point(132, 307);
-            this.txtRowsToImport.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtRowsToImport.Margin = new System.Windows.Forms.Padding(2);
             this.txtRowsToImport.Name = "txtRowsToImport";
             this.txtRowsToImport.Size = new System.Drawing.Size(85, 20);
             this.txtRowsToImport.TabIndex = 12;
             this.txtRowsToImport.Visible = false;
             // 
-            // btnClose
+            // toolStripButton1
             // 
-            this.btnClose.Location = new System.Drawing.Point(381, 375);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(151, 24);
-            this.btnClose.TabIndex = 34;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(28, 28);
+            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.ToolTipText = "Close the plugin";
+            this.toolStripButton1.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.btnAbout.Image = ((System.Drawing.Image)(resources.GetObject("btnAbout.Image")));
+            this.btnAbout.IsLink = true;
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.Size = new System.Drawing.Size(136, 28);
+            this.btnAbout.Text = "by Michal Chmielus";
+            this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
             // 
             // RolePluginControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.txtRowsToImport);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.chkAllRows);
@@ -373,7 +379,7 @@
             this.Controls.Add(this.txtFileName);
             this.Controls.Add(this.toolStripMenu);
             this.Name = "RolePluginControl";
-            this.Size = new System.Drawing.Size(559, 423);
+            this.Size = new System.Drawing.Size(565, 423);
             this.OnCloseTool += new System.EventHandler(this.RolePluginControl_OnCloseTool);
             this.Load += new System.EventHandler(this.RolePluginControl_Load);
             this.toolStripMenu.ResumeLayout(false);
@@ -387,7 +393,6 @@
 
         #endregion
         private System.Windows.Forms.ToolStrip toolStripMenu;
-        private System.Windows.Forms.ToolStripSeparator tssSeparator1;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.Label lblSourceFile;
         private System.Windows.Forms.Button btnRolesBrowse;
@@ -413,6 +418,7 @@
         private System.Windows.Forms.TextBox txtManager;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtRowsToImport;
-        private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripLabel btnAbout;
     }
 }
